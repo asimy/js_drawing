@@ -1,0 +1,109 @@
+<html><head></head><body>
+  <canvas id="myCanvas" width="960" height="1280" style="border:1px solid #d3d3d3;">
+    Your browser does not support the HTML5 canvas tag.</canvas>
+
+
+    <script>
+    var canvasElement = document.getElementById("myCanvas");
+
+    var canvas = canvasElement.getContext("2d");
+
+    var canvas_height = canvasElement.height;
+    var canvas_width = canvasElement.width;
+    var cellSize = 20;
+    // canvas.moveTo(0,0);
+    // canvas.lineTo(width,height);
+    // canvas.stroke();
+
+    var background = new Background();
+    var room1 = new Room(1, 2, 9, 8);
+    var room2 = new Room(20, 9, 10, 11);
+    var door1 = new Door(10, 5, 'vertical')
+    var door2 = new Door(20, 14, 'vertical')
+    var door3 = new Door(3, 10, 'horizontal')
+    var door4 = new Door(5, 2, 'horizontal')
+    background.draw();
+    room1.draw();
+    room2.draw();
+    door1.draw();
+    door2.draw();
+    door3.draw();
+    door4.draw();
+
+
+    function Room(left, top, width, height) {
+      this.left = left;
+      this.top = top;
+      this.width = width;
+      this.height = height;
+      var pixel_left = left * cellSize;
+      var pixel_top = top * cellSize;
+      var pixel_width = width * cellSize;
+      var pixel_height = height * cellSize;
+      this.draw = function() {
+        canvas.beginPath();
+        // canvas.lineWidth = .5;
+        canvas.strokeStyle = 'black';
+        // canvas.fillStyle = '#BBBBBB';
+        // canvas.fillRect(pixel_left, pixel_top, pixel_width, pixel_height);
+        canvas.strokeRect(pixel_left, pixel_top, pixel_width, pixel_height);
+      }
+    }
+
+    // direction must be vertical or horizontal
+    function Door(x, y, orientation) {
+      this.x = x;
+      this.y = y;
+      this.orientation = orientation;
+      var door_thickness = Math.max(Math.round(cellSize * 0.3), 4);;
+      var door_width = Math.min(Math.round(cellSize * 0.7), cellSize - 2);
+      if (orientation === "vertical") {
+        var pixel_left = x * cellSize - Math.round(door_thickness/2);
+        var pixel_top = y * cellSize + Math.round((cellSize - door_width)/2);
+        var pixel_width = door_thickness;
+        var pixel_height = door_width;
+      } else {
+        var pixel_left = x * cellSize + Math.round((cellSize - door_width)/2);
+        var pixel_top =  y * cellSize - Math.round(door_thickness/2);
+        var pixel_width = door_width;
+        var pixel_height = door_thickness;
+      }
+
+      this.draw = function() {
+        canvas.beginPath();
+        canvas.fillStyle = 'white';
+        canvas.strokeStyle = "black"
+        // canvas.lineWidth = 1;
+        canvas.strokeRect(pixel_left, pixel_top, pixel_width, pixel_height);
+        canvas.fillRect(pixel_left, pixel_top, pixel_width, pixel_height);
+      }
+    }
+
+    function Background() {
+      this.draw = function() {
+        //vertical lines
+        canvas.strokeStyle = '#99CCFF';
+        for (var i = 0; i <= canvas_width; i += cellSize) {
+          canvas.beginPath
+          canvas.moveTo(i, 0);
+          canvas.lineTo(i, canvas_height);
+          canvas.stroke();
+        }
+
+        //horizontal lines
+        for (var i = 0; i <= canvas_height; i += cellSize) {
+          canvas.beginPath
+          canvas.moveTo(0, i);
+          canvas.lineTo(canvas_width, i);
+          canvas.stroke();
+        }
+      }
+
+    }
+
+
+    </script>
+
+
+  </body>
+  </html>
